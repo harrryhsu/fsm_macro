@@ -56,8 +56,8 @@ static int ii = 0;
 		fsm.end = &&FSM_END_BLOCK_##c;          \
 		if (fsm.label)                          \
 			goto *fsm.label;                      \
-		body                                    \
-				fsm.label = 0;                      \
+		body;                                   \
+		fsm.label = 0;                          \
 		FSM_END_BLOCK_##c : Nop();              \
 	}
 
@@ -94,20 +94,22 @@ static int ii = 0;
 
 bool flag = false;
 
-void test(){
-		FSM_BEGIN({
-			FSM_DELAY_MS(2)
-			printf("Flag 1\n");
-			FSM_WAIT_FOR(flag)
-			printf("Flag 2\n");
-			flag = false;
-		})
+void test()
+{
+	FSM_BEGIN({
+		FSM_DELAY_MS(2)
+		printf("Flag 1\n");
+		FSM_WAIT_FOR(flag)
+		printf("Flag 2\n");
+		flag = false;
+	});
 
-				FSM_BEGIN({
-					FSM_DELAY_MS(10)
-					printf("Flag toggled\n");
-					flag = true;
-				})}
+	FSM_BEGIN({
+		FSM_DELAY_MS(10)
+		printf("Flag toggled\n");
+		flag = true;
+	})
+}
 
 FSM *fsmp;
 
