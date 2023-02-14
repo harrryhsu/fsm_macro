@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdbool.h>
 
+#define FSM_MAX_TIMER 20
+
 void Nop() {}
 
 static long StartTimeInMs = 0;
@@ -9,7 +11,7 @@ typedef struct FSM
 {
 	void *label;
 	void *end;
-	int timer[20];
+	unsigned long long int timer[FSM_MAX_TIMER];
 	int timerIndex;
 } FSM;
 
@@ -18,9 +20,9 @@ static int ii = 0;
 #define FSM_RESET_PROGRESS(fsmp) \
 	if (fsmp)                      \
 		fsmp->label = 0;
-#define FSM_RESET_TIMER(fsmp)   \
-	if (fsmp)                     \
-		for (ii = 0; ii < 20; ii++) \
+#define FSM_RESET_TIMER(fsmp)              \
+	if (fsmp)                                \
+		for (ii = 0; ii < FSM_MAX_TIMER; ii++) \
 			fsmp->timer[ii] = -1;
 #define FSM_RESET(fsmp) FSM_RESET_PROGRESS(fsmp) FSM_RESET_TIMER(fsmp)
 
