@@ -86,7 +86,9 @@ static int ii = 0;
 })
 
 #define _AUX_FSM_DELAY_MS(ms, c) _INNER_FSM_DELAY_MS(ms, c)
-#define FSM_DELAY_MS(ms) _AUX_FSM_DELAY_MS(ms, __COUNTER__)
+#define FSM_DELAY_MS_RET(ms) _AUX_FSM_DELAY_MS(ms, __COUNTER__)
+
+#define FSM_DELAY_MS(ms) FSM_WAIT_FOR(FSM_DELAY_MS_RET(ms))
 
 bool flag = false;
 FSM *fsmp;
@@ -94,12 +96,12 @@ FSM *fsmp;
 void test()
 {
 	FSM_BEGIN(fsmp, {
-		FSM_WAIT_FOR(FSM_DELAY_MS(5))
+		FSM_DELAY_MS(5);
 		flag = true;
 	});
 
 	FSM_BEGIN({
-		FSM_WAIT_FOR(FSM_DELAY_MS(2))
+		FSM_DELAY_MS(2);
 		printf("Flag 1\n");
 		FSM_WAIT_FOR(flag)
 		printf("Flag 2\n");
