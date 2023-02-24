@@ -89,34 +89,3 @@ static int ii = 0;
 #define FSM_DELAY_MS_RET(ms) _AUX_FSM_DELAY_MS(ms, __COUNTER__)
 
 #define FSM_DELAY_MS(ms) FSM_WAIT_FOR(FSM_DELAY_MS_RET(ms))
-
-bool flag = false;
-FSM *fsmp;
-
-void test()
-{
-	FSM_BEGIN(fsmp, {
-		FSM_DELAY_MS(5);
-		flag = true;
-	});
-
-	FSM_BEGIN({
-		FSM_DELAY_MS(2);
-		printf("Flag 1\n");
-		FSM_WAIT_FOR(flag)
-		printf("Flag 2\n");
-		flag = false;
-		FSM_RESET(fsmp);
-	});
-}
-
-void main()
-{
-	while (1)
-	{
-		StartTimeInMs += 1;
-		printf("Time: %ld\n", StartTimeInMs);
-		test();
-		sleep(1);
-	}
-}
