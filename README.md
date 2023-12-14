@@ -2,6 +2,8 @@
 
 FSM is a pure c macro implementation of rabbit dynamic c's costatement function
 
+Note this code requires the compiler to support [GCC's statement expression](https://gcc.gnu.org/onlinedocs/gcc/Statement-Exprs.html), it's not supported by visual studio
+
 ## Usage
 
 ```c
